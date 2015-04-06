@@ -1,4 +1,6 @@
 import java.io.*;
+import static java.lang.System.*;
+import javafx.stage.FileChooser;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 
@@ -42,9 +44,9 @@ public class ImageViewer extends javax.swing.JFrame {
         jMenu1.setText("文件");
 
         jMenuItem1.setText("打开");
-        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuItem1MouseClicked(evt);
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
             }
         });
         jMenu1.add(jMenuItem1);
@@ -55,6 +57,11 @@ public class ImageViewer extends javax.swing.JFrame {
         jMenu1.add(jSeparator2);
 
         jMenuItem3.setText("退出");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
@@ -70,9 +77,15 @@ public class ImageViewer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
-           
-    }//GEN-LAST:event_jMenuItem1MouseClicked
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        exit(0);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        ImageAction action = new ImageAction();
+        action.open();
+        System.out.println("button: open file ok");
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -100,54 +113,10 @@ public class ImageViewer extends javax.swing.JFrame {
         //</editor-fold>
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ImageViewer().setVisible(true);
+                ImageViewer frame = new ImageViewer();
+                frame.setVisible(true);
             }
         });
-    }
-    public class MyFileFilter extends javax.swing.filechooser.FileFilter {
-        String SuffixArray[], description;
-        public MyFileFilter(String[] SuffixArray, String desctiption) {
-            super();
-            this.SuffixArray = SuffixArray;
-            this.description = description;
-        }
-        public boolean accept(File file) {
-            String FileName = file.getName().toUpperCase();
-            for(String suffix : SuffixArray) {
-                if(FileName.endsWith(suffix)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        @Override
-        public String getDescription() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-            
-    }
-    public class FileChooser extends JFileChooser {
-        private void AddFilter() {
-            this.addChoosableFileFilter(new MyFileFilter(new String[]{".BMP",".JPG",".JPEG",".JPE",".JFIF",".GIF","TIF",".TIFF",".PNG",".ICO"},"所有图片") {});
-            this.addChoosableFileFilter(new MyFileFilter(new String[]{".BMP"},"BMP 文件 (*.BMP)"));
-            this.addChoosableFileFilter(new MyFileFilter(new String[]{".JPG",".JPEG",".JPE",".JFIF"},"JPEG 文件 (*.JPG;*.JPEG;*.JPE;*.JFIF)"));
-            this.addChoosableFileFilter(new MyFileFilter(new String[]{".GIF"},"GIF 文件 (*.GIF)"));
-            this.addChoosableFileFilter(new MyFileFilter(new String[]{".TIF",".TIFF"},"TIFF 文件 (*.TIF;*.TIFF)"));
-            this.addChoosableFileFilter(new MyFileFilter(new String[]{".PNG"},"PNG 文件 (*.PNG)"));
-            this.addChoosableFileFilter(new MyFileFilter(new String[]{".ICO"},"ICO 文件 (*.ICO)"));
-        }
-        public FileChooser() {
-            super.setAcceptAllFileFilterUsed(false);
-            AddFilter();
-        }
-    }
-    public class ImageAction {
-        private final FileChooser filechooser = new FileChooser();
-        private File CurrentFile = null;
-        private File CurrentDir = null;
-        private File[] FilesArr;
-        
-        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
@@ -162,4 +131,15 @@ public class ImageViewer extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     // End of variables declaration//GEN-END:variables
+}
+
+class ImageAction {
+        private final MyFileChooser filechooser = new MyFileChooser();
+        private File CurrentFile = null;
+        private File CurrentDir = null;
+        private File[] FilesArr;
+        void open() {
+            System.out.println("filechooser ok");
+            filechooser.showOpenDialog(filechooser);
+        }
 }
