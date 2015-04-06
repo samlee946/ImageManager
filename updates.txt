@@ -1,2 +1,5 @@
 2015-4-4
 Git repository established.
+
+2015-4-6
+Multi-programer develop starts.
