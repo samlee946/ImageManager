@@ -5,6 +5,7 @@ import javax.swing.*;
 
 public class ImageViewer extends javax.swing.JFrame {
     static ImageViewer frame;
+    private final int ZOOM = 1, NARROW = -1;
     public ImageViewer() {
         initComponents();
         ImageLabel.setHorizontalAlignment(SwingConstants.CENTER); //居中显示Label的内容
@@ -25,6 +26,10 @@ public class ImageViewer extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        ResizeSlider = new javax.swing.JSlider();
+        jLabel1 = new javax.swing.JLabel();
+        ZoomLabel = new javax.swing.JLabel();
+        ResetsizeButton = new javax.swing.JButton();
         MenuBar = new javax.swing.JMenuBar();
         FileMenu = new javax.swing.JMenu();
         OpenMenu = new javax.swing.JMenuItem();
@@ -54,7 +59,8 @@ public class ImageViewer extends javax.swing.JFrame {
         getContentPane().add(MainPanel, java.awt.BorderLayout.CENTER);
 
         jPanel1.setMinimumSize(new java.awt.Dimension(0, 0));
-        jPanel1.setPreferredSize(new java.awt.Dimension(100, 80));
+        jPanel1.setPreferredSize(new java.awt.Dimension(128, 128));
+        jPanel1.setRequestFocusEnabled(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setMinimumSize(new java.awt.Dimension(0, 0));
@@ -90,34 +96,84 @@ public class ImageViewer extends javax.swing.JFrame {
 
         jButton6.setText("jButton3");
 
+        ResizeSlider.setMaximum(5000);
+        ResizeSlider.setValue(1000);
+        ResizeSlider.setEnabled(false);
+        ResizeSlider.setPreferredSize(new java.awt.Dimension(97, 23));
+        ResizeSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                ResizeSliderStateChanged(evt);
+            }
+        });
+        ResizeSlider.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                ResizeSliderCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+
+        jLabel1.setText("当前放大倍数:");
+
+        ZoomLabel.setText("100%");
+
+        ResetsizeButton.setLabel("复原");
+        ResetsizeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResetsizeButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
         ControlPanel.setLayout(ControlPanelLayout);
         ControlPanelLayout.setHorizontalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ControlPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ControlPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ZoomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ControlPanelLayout.createSequentialGroup()
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ResizeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ControlPanelLayout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ResetsizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 163, Short.MAX_VALUE))
         );
         ControlPanelLayout.setVerticalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addComponent(jButton3)
-                .addComponent(jButton4)
-                .addComponent(jButton5)
-                .addComponent(jButton6))
+            .addGroup(ControlPanelLayout.createSequentialGroup()
+                .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(ResetsizeButton)
+                    .addGroup(ControlPanelLayout.createSequentialGroup()
+                        .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2)
+                            .addComponent(jButton5)
+                            .addComponent(jButton6)
+                            .addComponent(jButton3)
+                            .addComponent(jButton4))
+                        .addGap(2, 2, 2)
+                        .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ResizeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(ZoomLabel)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(366, Short.MAX_VALUE))
         );
 
         jPanel1.add(ControlPanel, java.awt.BorderLayout.CENTER);
@@ -184,6 +240,9 @@ public class ImageViewer extends javax.swing.JFrame {
     JLabel getLabel() {
         return ImageLabel;
     }
+    JSlider getSlider() {
+        return ResizeSlider;
+    }
     private void ExitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuActionPerformed
         exit(0);
     }//GEN-LAST:event_ExitMenuActionPerformed
@@ -191,24 +250,27 @@ public class ImageViewer extends javax.swing.JFrame {
     private void OpenMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenMenuActionPerformed
         ImageAction action = ImageAction.getInstance();
         action.open(frame);
+        validate();
         System.out.println("button: open file ok");
     }//GEN-LAST:event_OpenMenuActionPerformed
 
     private void PreMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreMenuActionPerformed
         ImageAction action = ImageAction.getInstance();
         action.ViewPreImage(frame);
+        validate();
     }//GEN-LAST:event_PreMenuActionPerformed
 
     private void NextMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextMenuActionPerformed
         ImageAction action = ImageAction.getInstance();
         action.ViewNextImage(frame);
+        validate();
     }//GEN-LAST:event_NextMenuActionPerformed
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         int width = frame.getWidth(), height = frame.getHeight();
         
-        MainPanel.setSize(width, (int) (height * 0.8));
-        ImageLabel.setSize(width, (int) (height * 0.8));
+        MainPanel.setSize(width, (int) (height * 0.7));
+        ImageLabel.setSize(width, (int) (height * 0.7));
         
         int Blankwidth = max((int) (width - 480) / 2, 0);
         jPanel1.setSize(width, (int) (height * 0.2));
@@ -224,12 +286,31 @@ public class ImageViewer extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         ImageAction action = ImageAction.getInstance();
         action.ViewPreImage(frame);
+        ResizeSlider.setValue(1000);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ImageAction action = ImageAction.getInstance();
         action.ViewNextImage(frame);
+        ResizeSlider.setValue(1000);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void ResizeSliderCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_ResizeSliderCaretPositionChanged
+        
+    }//GEN-LAST:event_ResizeSliderCaretPositionChanged
+
+    private void ResizeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ResizeSliderStateChanged
+        ImageAction action = ImageAction.getInstance();
+        int val = max(1, ResizeSlider.getValue());
+        double time = (double)val / 1000;
+        System.out.println(val);
+        ZoomLabel.setText(time * 100 + "%");
+        action.ImageResize(frame, time);
+    }//GEN-LAST:event_ResizeSliderStateChanged
+
+    private void ResetsizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetsizeButtonActionPerformed
+        ResizeSlider.setValue(1000);
+    }//GEN-LAST:event_ResetsizeButtonActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -273,13 +354,17 @@ public class ImageViewer extends javax.swing.JFrame {
     private javax.swing.JMenuItem OpenMenu;
     private javax.swing.JMenuItem OptionMenu;
     private javax.swing.JMenuItem PreMenu;
+    private javax.swing.JButton ResetsizeButton;
+    private javax.swing.JSlider ResizeSlider;
     private javax.swing.JMenu ToolsMenu;
+    private javax.swing.JLabel ZoomLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

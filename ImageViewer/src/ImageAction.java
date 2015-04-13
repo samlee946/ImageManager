@@ -1,4 +1,6 @@
+import java.awt.Image;
 import java.io.File;
+import static java.lang.Math.*;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -12,6 +14,7 @@ class ImageAction {
     private ArrayList<File> ImagesPreLoad = null;
     private String FileName = null;
     private String[] Filter = new String[]{".BMP",".JPG",".JPEG",".JPE",".JFIF",".GIF","TIF",".TIFF",".PNG",".ICO"};
+    private ImageIcon imageicon = null;
     static ImageAction getInstance() {
         if(existance == null) existance = new ImageAction();
         return existance;
@@ -38,19 +41,34 @@ class ImageAction {
                     }
                 }
             }
-            frame.getLabel().setIcon(new ImageIcon(FileName));
+            imageicon = new ImageIcon(FileName);
+            frame.getLabel().setIcon(imageicon);
+            frame.getSlider().enable(true);
         }
     }
     void ViewPreImage(ImageViewer frame) {
          int index = this.ImagesPreLoad.indexOf(this.CurrentFile), size = ImagesPreLoad.size();
-         int Newindex = (index - 1 + size) % size;
-         this.CurrentFile = ImagesPreLoad.get(Newindex);
-         frame.getLabel().setIcon(new ImageIcon(this.CurrentFile.getPath()));
+         if(size > 0) {
+            int Newindex = (index - 1 + size) % size;
+            this.CurrentFile = ImagesPreLoad.get(Newindex);
+            imageicon = new ImageIcon(this.CurrentFile.getPath());
+            frame.getLabel().setIcon(imageicon);
+         }
     }
     void ViewNextImage(ImageViewer frame) {
          int index = this.ImagesPreLoad.indexOf(this.CurrentFile), size = ImagesPreLoad.size();
-         int Newindex = (index + 1) % size;
-         this.CurrentFile = ImagesPreLoad.get(Newindex);
-         frame.getLabel().setIcon(new ImageIcon(this.CurrentFile.getPath()));
+         if(size > 0) {
+            int Newindex = (index + 1) % size;
+            this.CurrentFile = ImagesPreLoad.get(Newindex);
+            imageicon = new ImageIcon(this.CurrentFile.getPath());
+            frame.getLabel().setIcon(imageicon);
+         }
+    }
+    void ImageResize(ImageViewer frame, double size) {
+        if(imageicon != null) {
+            int width = max(1, (int)(imageicon.getIconWidth() * size));
+            int height = max(1, (int)(imageicon.getIconHeight() * size));
+            frame.getLabel().setIcon(new ImageIcon(imageicon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT)));
+        }
     }
 }
