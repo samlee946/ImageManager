@@ -7,6 +7,7 @@ public class ImageViewer extends javax.swing.JFrame {
     static ImageViewer frame;
     public ImageViewer() {
         initComponents();
+        ImageLabel.setHorizontalAlignment(SwingConstants.CENTER); //居中显示Label的内容
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
