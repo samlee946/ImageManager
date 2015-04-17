@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.awt.Image;
 import static java.lang.Math.max;
 import static java.lang.System.*;
 import javax.swing.*;
@@ -24,8 +25,8 @@ public class ImageViewer extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        CounterClockwiseButton = new javax.swing.JButton();
+        ClockwiseButton = new javax.swing.JButton();
         ResizeSlider = new javax.swing.JSlider();
         jLabel1 = new javax.swing.JLabel();
         ZoomLabel = new javax.swing.JLabel();
@@ -59,7 +60,7 @@ public class ImageViewer extends javax.swing.JFrame {
         getContentPane().add(MainPanel, java.awt.BorderLayout.CENTER);
 
         jPanel1.setMinimumSize(new java.awt.Dimension(0, 0));
-        jPanel1.setPreferredSize(new java.awt.Dimension(128, 128));
+        jPanel1.setPreferredSize(new java.awt.Dimension(120, 120));
         jPanel1.setRequestFocusEnabled(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -92,9 +93,19 @@ public class ImageViewer extends javax.swing.JFrame {
 
         jButton4.setText("jButton3");
 
-        jButton5.setText("jButton3");
+        CounterClockwiseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/counterclockwise.jpg"))); // NOI18N
+        CounterClockwiseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CounterClockwiseButtonActionPerformed(evt);
+            }
+        });
 
-        jButton6.setText("jButton3");
+        ClockwiseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clockwise.jpg"))); // NOI18N
+        ClockwiseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClockwiseButtonActionPerformed(evt);
+            }
+        });
 
         ResizeSlider.setMaximum(5000);
         ResizeSlider.setValue(1000);
@@ -148,23 +159,20 @@ public class ImageViewer extends javax.swing.JFrame {
                     .addGroup(ControlPanelLayout.createSequentialGroup()
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CounterClockwiseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(ClockwiseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ResetsizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 163, Short.MAX_VALUE))
         );
         ControlPanelLayout.setVerticalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ControlPanelLayout.createSequentialGroup()
-                .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ResetsizeButton)
+                .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(ControlPanelLayout.createSequentialGroup()
                         .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2)
-                            .addComponent(jButton5)
-                            .addComponent(jButton6)
                             .addComponent(jButton3)
                             .addComponent(jButton4))
                         .addGap(2, 2, 2)
@@ -172,7 +180,14 @@ public class ImageViewer extends javax.swing.JFrame {
                             .addComponent(ResizeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(ZoomLabel)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(ControlPanelLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(CounterClockwiseButton)
+                            .addComponent(ClockwiseButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ResetsizeButton)))
                 .addContainerGap(366, Short.MAX_VALUE))
         );
 
@@ -312,6 +327,18 @@ public class ImageViewer extends javax.swing.JFrame {
         ResizeSlider.setValue(1000);
     }//GEN-LAST:event_ResetsizeButtonActionPerformed
 
+    private void ClockwiseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClockwiseButtonActionPerformed
+        ImageAction action = ImageAction.getInstance();
+        action.rotate(frame, 1);
+        validate();
+    }//GEN-LAST:event_ClockwiseButtonActionPerformed
+
+    private void CounterClockwiseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CounterClockwiseButtonActionPerformed
+        ImageAction action = ImageAction.getInstance();
+        action.rotate(frame, -1);
+        validate();
+    }//GEN-LAST:event_CounterClockwiseButtonActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -344,7 +371,9 @@ public class ImageViewer extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu AboutMenu;
+    private javax.swing.JButton ClockwiseButton;
     private javax.swing.JPanel ControlPanel;
+    private javax.swing.JButton CounterClockwiseButton;
     private javax.swing.JMenuItem ExitMenu;
     private javax.swing.JMenu FileMenu;
     private javax.swing.JLabel ImageLabel;
@@ -362,8 +391,6 @@ public class ImageViewer extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

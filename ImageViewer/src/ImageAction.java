@@ -1,3 +1,4 @@
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
 import static java.lang.Math.*;
@@ -5,6 +6,9 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import java.awt.GraphicsConfiguration;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 class ImageAction {
     private final MyFileChooser filechooser = new MyFileChooser();
     private static ImageAction existance = null;
@@ -71,4 +75,21 @@ class ImageAction {
             frame.getLabel().setIcon(new ImageIcon(imageicon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT)));
         }
     }
-}
+    void rotate(ImageViewer frame, int direction) {
+        if(imageicon != null) {
+            AffineTransform trans = new AffineTransform();
+            Image image = imageicon.getImage();
+            int w = image.getWidth(null), h = image.getHeight(null);
+//            trans.scale(100, 100);
+            BufferedImage buffer = new BufferedImage(h, w, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2 = buffer.createGraphics();
+            g2.setTransform(trans);
+            trans.rotate(Math.PI * direction / 2, w / 2, h / 2);
+            g2.setTransform(trans);
+            g2.drawImage(image, null, null);
+            imageicon = new ImageIcon(buffer);
+            frame.getLabel().setIcon(imageicon);
+            System.out.println("Rotate");
+        }
+    }
+  }
