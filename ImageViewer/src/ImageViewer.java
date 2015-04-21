@@ -9,7 +9,7 @@ public class ImageViewer extends javax.swing.JFrame {
     private final int ZOOM = 1, NARROW = -1;
     public ImageViewer() {
         initComponents();
-        ImageLabel.setHorizontalAlignment(SwingConstants.CENTER); //居中显示Label的内容
+        //ImageLabel.setHorizontalAlignment(SwingConstants.CENTER); //居中显示Label的内容
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -41,6 +41,9 @@ public class ImageViewer extends javax.swing.JFrame {
         ToolsMenu = new javax.swing.JMenu();
         PreMenu = new javax.swing.JMenuItem();
         NextMenu = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        ClockwiseMenu = new javax.swing.JMenuItem();
+        CounterClockwiseMenu = new javax.swing.JMenuItem();
         AboutMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -54,6 +57,7 @@ public class ImageViewer extends javax.swing.JFrame {
 
         MainPanel.setMinimumSize(new java.awt.Dimension(0, 0));
 
+        ImageLabel.setText("无法读取图片");
         ImageLabel.setMaximumSize(new java.awt.Dimension(10086, 10086));
         MainPanel.setViewportView(ImageLabel);
 
@@ -91,7 +95,7 @@ public class ImageViewer extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("jButton3");
+        jButton4.setText("删除");
 
         CounterClockwiseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/counterclockwise.jpg"))); // NOI18N
         CounterClockwiseButton.addActionListener(new java.awt.event.ActionListener() {
@@ -241,6 +245,23 @@ public class ImageViewer extends javax.swing.JFrame {
             }
         });
         ToolsMenu.add(NextMenu);
+        ToolsMenu.add(jSeparator3);
+
+        ClockwiseMenu.setText("顺时针旋转图片");
+        ClockwiseMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClockwiseMenuActionPerformed(evt);
+            }
+        });
+        ToolsMenu.add(ClockwiseMenu);
+
+        CounterClockwiseMenu.setText("逆时针旋转图片");
+        CounterClockwiseMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CounterClockwiseMenuActionPerformed(evt);
+            }
+        });
+        ToolsMenu.add(CounterClockwiseMenu);
 
         MenuBar.add(ToolsMenu);
 
@@ -339,6 +360,18 @@ public class ImageViewer extends javax.swing.JFrame {
         validate();
     }//GEN-LAST:event_CounterClockwiseButtonActionPerformed
 
+    private void ClockwiseMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClockwiseMenuActionPerformed
+        ImageAction action = ImageAction.getInstance();
+        action.rotate(frame, 1);
+        validate();
+    }//GEN-LAST:event_ClockwiseMenuActionPerformed
+
+    private void CounterClockwiseMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CounterClockwiseMenuActionPerformed
+        ImageAction action = ImageAction.getInstance();
+        action.rotate(frame, -1);
+        validate();
+    }//GEN-LAST:event_CounterClockwiseMenuActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -372,8 +405,10 @@ public class ImageViewer extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu AboutMenu;
     private javax.swing.JButton ClockwiseButton;
+    private javax.swing.JMenuItem ClockwiseMenu;
     private javax.swing.JPanel ControlPanel;
     private javax.swing.JButton CounterClockwiseButton;
+    private javax.swing.JMenuItem CounterClockwiseMenu;
     private javax.swing.JMenuItem ExitMenu;
     private javax.swing.JMenu FileMenu;
     private javax.swing.JLabel ImageLabel;
@@ -397,5 +432,6 @@ public class ImageViewer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     // End of variables declaration//GEN-END:variables
 }

@@ -69,6 +69,24 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NextMenuActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ClockwiseMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x987a;&#x65f6;&#x9488;&#x65cb;&#x8f6c;&#x56fe;&#x7247;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ClockwiseMenuActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="CounterClockwiseMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x9006;&#x65f6;&#x9488;&#x65cb;&#x8f6c;&#x56fe;&#x7247;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CounterClockwiseMenuActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="AboutMenu">
@@ -125,6 +143,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="ImageLabel">
           <Properties>
+            <Property name="text" type="java.lang.String" value="&#x65e0;&#x6cd5;&#x8bfb;&#x53d6;&#x56fe;&#x7247;"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10086, 10086]"/>
             </Property>
@@ -295,7 +314,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButton4">
               <Properties>
-                <Property name="text" type="java.lang.String" value="jButton3"/>
+                <Property name="text" type="java.lang.String" value="&#x5220;&#x9664;"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="CounterClockwiseButton">

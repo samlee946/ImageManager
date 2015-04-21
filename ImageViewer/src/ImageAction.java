@@ -84,7 +84,7 @@ class ImageAction {
             BufferedImage buffer = new BufferedImage(h, w, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2 = buffer.createGraphics();
             g2.setTransform(trans);
-            trans.rotate(Math.PI * direction / 2, w / 2, h / 2);
+            trans.rotate(Math.PI * direction / 2, (double)w / 2, (double)h / 2);
             g2.setTransform(trans);
             g2.drawImage(image, null, null);
             imageicon = new ImageIcon(buffer);
