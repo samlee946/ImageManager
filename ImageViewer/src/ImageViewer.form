@@ -143,7 +143,6 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="ImageLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x65e0;&#x6cd5;&#x8bfb;&#x53d6;&#x56fe;&#x7247;"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10086, 10086]"/>
             </Property>

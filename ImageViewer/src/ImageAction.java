@@ -18,7 +18,7 @@ class ImageAction {
     private ArrayList<File> ImagesPreLoad = null;
     private String FileName = null;
     private String[] Filter = new String[]{".BMP",".JPG",".JPEG",".JPE",".JFIF",".GIF","TIF",".TIFF",".PNG",".ICO"};
-    private ImageIcon imageicon = null;
+    ImageIcon imageicon = null;
     static ImageAction getInstance() {
         if(existance == null) existance = new ImageAction();
         return existance;
@@ -80,13 +80,14 @@ class ImageAction {
             AffineTransform trans = new AffineTransform();
             Image image = imageicon.getImage();
             int w = image.getWidth(null), h = image.getHeight(null);
-//            trans.scale(100, 100);
-            BufferedImage buffer = new BufferedImage(h, w, BufferedImage.TYPE_INT_RGB);
+            int maxx = max(w, h);
+            BufferedImage buffer = new BufferedImage(2 * maxx, 2 * maxx, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2 = buffer.createGraphics();
+            trans.rotate(Math.PI * direction / 2, maxx, maxx);
             g2.setTransform(trans);
-            trans.rotate(Math.PI * direction / 2, (double)w / 2, (double)h / 2);
-            g2.setTransform(trans);
-            g2.drawImage(image, null, null);
+            int nw = (int) (maxx - w / 2), nh = (int) (maxx - h / 2);
+            g2.drawImage(image, nw, nh, null);
+            buffer = buffer.getSubimage(nh, nw, h, w);
             imageicon = new ImageIcon(buffer);
             frame.getLabel().setIcon(imageicon);
             System.out.println("Rotate");

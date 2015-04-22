@@ -9,7 +9,12 @@ public class ImageViewer extends javax.swing.JFrame {
     private final int ZOOM = 1, NARROW = -1;
     public ImageViewer() {
         initComponents();
-        //ImageLabel.setHorizontalAlignment(SwingConstants.CENTER); //居中显示Label的内容
+        ImageLabel.setHorizontalAlignment(SwingConstants.CENTER); //居中显示Label的内容
+//        //DEBUG
+//        ImageAction action = ImageAction.getInstance();
+//        action.imageicon = new ImageIcon("I:\\Users\\Administrator\\Pictures\\03bd91a2-aafc-11e4-848d-ed0abaecf4a1.jpg");
+//        ImageLabel.setIcon(action.imageicon);
+//        //
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -57,7 +62,6 @@ public class ImageViewer extends javax.swing.JFrame {
 
         MainPanel.setMinimumSize(new java.awt.Dimension(0, 0));
 
-        ImageLabel.setText("无法读取图片");
         ImageLabel.setMaximumSize(new java.awt.Dimension(10086, 10086));
         MainPanel.setViewportView(ImageLabel);
 
