@@ -83,7 +83,12 @@ public class ImageViewer extends javax.swing.JFrame {
         ControlPanel.setMinimumSize(new java.awt.Dimension(0, 480));
         ControlPanel.setPreferredSize(new java.awt.Dimension(80, 80));
 
-        jButton1.setText("jButton1");
+        jButton1.setText("AutoPlay");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("下一张");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -375,6 +380,11 @@ public class ImageViewer extends javax.swing.JFrame {
         action.rotate(frame, -1);
         validate();
     }//GEN-LAST:event_CounterClockwiseMenuActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        AutoPlay autoplay = AutoPlay.getInstance();
+        autoplay.start();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
