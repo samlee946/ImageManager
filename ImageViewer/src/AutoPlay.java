@@ -1,10 +1,17 @@
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class MyTask extends TimerTask {
     public void run() {
-        ImageAction action = ImageAction.getInstance();
-        action.ViewNextImage(ImageViewer.frame);
+        try {
+            ImageAction action = ImageAction.getInstance();
+            action.ViewNextImage(ImageViewer.frame);
+        } catch (IOException ex) {
+            Logger.getLogger(MyTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
 public class AutoPlay {
@@ -20,11 +27,12 @@ public class AutoPlay {
         task = new MyTask();
     }
     void start() {
-        timer.purge();
+        if(timer != null) timer.cancel();
+        timer = new Timer();
         timer.schedule(task, 1000, 4000);
     }
     void stop() {
-        timer.purge();
+        if(timer != null) timer.cancel();
     }
 //    public static void main(String[] args) {
 //        Timer timer = new Timer();
