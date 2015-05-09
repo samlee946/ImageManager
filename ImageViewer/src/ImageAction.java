@@ -54,6 +54,27 @@ class ImageAction {
             RotateCount = 0;
         }
     }
+    void openByPath(File image, ImageViewer frame) {
+        ImagesPreLoad = new ArrayList<File>();
+        CurrentDir = new File(image.getParent());
+        System.out.println(CurrentDir.toString());
+        File Temp[] = CurrentDir.listFiles();
+        for(File file : Temp) {
+            if(!file.isHidden() && !file.isDirectory()) {
+                for(String s : Filter) {
+                    if(file.toString().toUpperCase().endsWith(s)) {
+                        this.ImagesPreLoad.add(file);
+                        System.out.println(file.getName());
+                        break;
+                    }
+                }
+            }
+        }
+        imageicon = new ImageIcon(image.getPath());
+        frame.getLabel().setIcon(imageicon);
+        frame.getSlider().enable(true);
+        RotateCount = 0;
+    }
     void ViewPreImage(ImageViewer frame) throws IOException {
         if(ImagesPreLoad != null) {
             int index = this.ImagesPreLoad.indexOf(this.CurrentFile), size = ImagesPreLoad.size();

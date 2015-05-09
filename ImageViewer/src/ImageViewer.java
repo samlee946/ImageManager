@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.max;
 import static java.lang.System.*;
@@ -7,7 +8,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public class ImageViewer extends javax.swing.JFrame {
-    static ImageViewer frame;
+    static ImageViewer frame = null;
     public ImageViewer() {
         initComponents();
         ImageLabel.setHorizontalAlignment(SwingConstants.CENTER); //居中显示Label的内容
@@ -17,6 +18,17 @@ public class ImageViewer extends javax.swing.JFrame {
 //        action.imageicon = new ImageIcon("I:\\Users\\Administrator\\Pictures\\03bd91a2-aafc-11e4-848d-ed0abaecf4a1.jpg");
 //        ImageLabel.setIcon(action.imageicon);
 //        //
+    }
+    static ImageViewer getInstance() {
+        System.out.println("open outside");
+        if(frame == null) frame = new ImageViewer();
+        frame.setVisible(true);
+        frame.setSize(1280, 720);
+        return frame;
+    }
+    void open(File file) {
+        ImageAction action = ImageAction.getInstance();
+        action.openByPath(file, frame);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -445,6 +457,7 @@ public class ImageViewer extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         java.awt.EventQueue.invokeLater(() -> {
+            System.out.println("open inside");
             frame = new ImageViewer();
             frame.setVisible(true);
             frame.setSize(1280, 720);
