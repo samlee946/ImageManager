@@ -26,6 +26,12 @@ class ImageAction {
         if(existance == null) existance = new ImageAction();
         return existance;
     }
+    File getFile() {
+        return CurrentFile;
+    }
+    ArrayList<File> getFiles() {
+        return ImagesPreLoad;
+    }
     void open(ImageViewer frame) {
         System.out.println("filechooser ok");
         if(filechooser.showOpenDialog(filechooser) == JFileChooser.APPROVE_OPTION) {
@@ -50,13 +56,17 @@ class ImageAction {
             }
             imageicon = new ImageIcon(FileName);
             frame.getLabel().setIcon(imageicon);
-            frame.getSlider().enable(true);
+            frame.getSlider().setEnabled(true);
+            frame.getAutoPlay().setEnabled(true);
             RotateCount = 0;
+            frame.validate();
         }
     }
     void openByPath(File image, ImageViewer frame) {
         ImagesPreLoad = new ArrayList<File>();
-        CurrentDir = new File(image.getParent());
+        CurrentFile = image;
+        FilePath = CurrentDir = new File(image.getParent());
+        FileName = image.toString();
         System.out.println(CurrentDir.toString());
         File Temp[] = CurrentDir.listFiles();
         for(File file : Temp) {
@@ -72,8 +82,10 @@ class ImageAction {
         }
         imageicon = new ImageIcon(image.getPath());
         frame.getLabel().setIcon(imageicon);
-        frame.getSlider().enable(true);
+        frame.getSlider().setEnabled(true);
+        frame.getAutoPlay().setEnabled(true);
         RotateCount = 0;
+        frame.validate();
     }
     void ViewPreImage(ImageViewer frame) throws IOException {
         if(ImagesPreLoad != null) {

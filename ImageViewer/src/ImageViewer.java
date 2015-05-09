@@ -40,7 +40,7 @@ public class ImageViewer extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         ControlPanel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        AutoPlayButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -98,10 +98,11 @@ public class ImageViewer extends javax.swing.JFrame {
         ControlPanel.setMinimumSize(new java.awt.Dimension(0, 480));
         ControlPanel.setPreferredSize(new java.awt.Dimension(80, 80));
 
-        jButton1.setText("AutoPlay");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        AutoPlayButton.setText("AutoPlay");
+        AutoPlayButton.setEnabled(false);
+        AutoPlayButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                AutoPlayButtonActionPerformed(evt);
             }
         });
 
@@ -144,13 +145,6 @@ public class ImageViewer extends javax.swing.JFrame {
                 ResizeSliderStateChanged(evt);
             }
         });
-        ResizeSlider.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-                ResizeSliderCaretPositionChanged(evt);
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
 
         jLabel1.setText("当前放大倍数:");
 
@@ -180,7 +174,7 @@ public class ImageViewer extends javax.swing.JFrame {
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AutoPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ResizeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,7 +195,7 @@ public class ImageViewer extends javax.swing.JFrame {
                 .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(ControlPanelLayout.createSequentialGroup()
                         .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AutoPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2)
                             .addComponent(jButton3)
                             .addComponent(jButton4))
@@ -313,6 +307,9 @@ public class ImageViewer extends javax.swing.JFrame {
     JSlider getSlider() {
         return ResizeSlider;
     }
+    JButton getAutoPlay() {
+        return AutoPlayButton;
+    }
     private void ExitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuActionPerformed
         exit(0);
     }//GEN-LAST:event_ExitMenuActionPerformed
@@ -381,10 +378,6 @@ public class ImageViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void ResizeSliderCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_ResizeSliderCaretPositionChanged
-        
-    }//GEN-LAST:event_ResizeSliderCaretPositionChanged
-
     private void ResizeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ResizeSliderStateChanged
         ImageAction action = ImageAction.getInstance();
         int val = max(1, ResizeSlider.getValue());
@@ -422,14 +415,23 @@ public class ImageViewer extends javax.swing.JFrame {
         validate();
     }//GEN-LAST:event_CounterClockwiseMenuActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AutoPlay autoplay = AutoPlay.getInstance();
-        autoplay.start();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void AutoPlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoPlayButtonActionPerformed
+        try {
+            //AutoPlay autoplay = AutoPlay.getInstance();
+            //autoplay.start();
+            Slider slider = Slider.getInstance();
+            slider.setFrame(frame);
+            slider.setVisible(true);
+            slider.Play();
+        } catch (IOException ex) {
+            Logger.getLogger(ImageViewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_AutoPlayButtonActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        ImageAction action = ImageAction.getInstance();
-        
+        Slider slider = Slider.getInstance();
+        slider.setFrame(frame);
+        slider.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public static void main(String args[]) {
@@ -456,15 +458,19 @@ public class ImageViewer extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        java.awt.EventQueue.invokeLater(() -> {
-            System.out.println("open inside");
-            frame = new ImageViewer();
-            frame.setVisible(true);
-            frame.setSize(1280, 720);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                System.out.println("open inside");
+                frame = new ImageViewer();
+                frame.setVisible(true);
+                frame.setSize(1280, 720);
+            }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu AboutMenu;
+    public javax.swing.JButton AutoPlayButton;
     private javax.swing.JButton ClockwiseButton;
     private javax.swing.JMenuItem ClockwiseMenu;
     private javax.swing.JPanel ControlPanel;
@@ -480,10 +486,9 @@ public class ImageViewer extends javax.swing.JFrame {
     private javax.swing.JMenuItem OptionMenu;
     private javax.swing.JMenuItem PreMenu;
     private javax.swing.JButton ResetsizeButton;
-    private javax.swing.JSlider ResizeSlider;
+    public javax.swing.JSlider ResizeSlider;
     private javax.swing.JMenu ToolsMenu;
     private javax.swing.JLabel ZoomLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
