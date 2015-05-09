@@ -1,3 +1,4 @@
+package kechengsheji;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -9,6 +10,7 @@ import javax.imageio.ImageIO;
  *判断是不是照片
  */
 public class ImageJudge {
+	//是照片的话放回True
 	public static boolean IsImage(File file)
 	{
 		try{

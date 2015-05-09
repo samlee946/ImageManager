@@ -1,3 +1,4 @@
+package kechengsheji;
 
 import java.io.File;
 import java.util.Stack;
@@ -65,5 +66,14 @@ public class UnZipFile {
 				return FileManage.getFileInFolder(defaultPath);
 			}
 			else return null;
+	}
+	public static boolean JudgeIsZip(File filePath){
+		try{
+		net.lingala.zip4j.core.ZipFile zFile=new ZipFile(filePath);
+		if(zFile.isValidZipFile()) return true;
+		}catch(Exception ex){
+			return false;
+		}
+		return false;
 	}
 }
