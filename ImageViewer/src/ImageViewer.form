@@ -182,10 +182,6 @@
               <Dimension value="[10086, 10086]"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="ImageLabelMouseDragged"/>
-            <EventHandler event="mouseWheelMoved" listener="java.awt.event.MouseWheelListener" parameters="java.awt.event.MouseWheelEvent" handler="ImageLabelMouseWheelMoved"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

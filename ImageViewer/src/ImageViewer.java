@@ -103,16 +103,6 @@ public class ImageViewer extends javax.swing.JFrame implements MouseWheelListene
 
         ImageLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         ImageLabel.setMaximumSize(new java.awt.Dimension(10086, 10086));
-        ImageLabel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                ImageLabelMouseDragged(evt);
-            }
-        });
-        ImageLabel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
-                ImageLabelMouseWheelMoved(evt);
-            }
-        });
         MainPanel.setViewportView(ImageLabel);
 
         getContentPane().add(MainPanel, java.awt.BorderLayout.CENTER);
@@ -474,8 +464,6 @@ public class ImageViewer extends javax.swing.JFrame implements MouseWheelListene
     }//GEN-LAST:event_CounterClockwiseMenuActionPerformed
 
     private void AutoPlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoPlayButtonActionPerformed
-//        Slider slider = Slider.getInstance();
-//        slider.setFrame(frame);
         Slider slider = new Slider();
         slider.setFrame(frame);
         slider.slideshow();
@@ -491,10 +479,6 @@ public class ImageViewer extends javax.swing.JFrame implements MouseWheelListene
         }
     }//GEN-LAST:event_SaveItemActionPerformed
 
-    private void ImageLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseDragged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ImageLabelMouseDragged
-
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         ResizeSlider.setValue(ResizeSlider.getValue() + 100);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -502,10 +486,6 @@ public class ImageViewer extends javax.swing.JFrame implements MouseWheelListene
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         ResizeSlider.setValue(ResizeSlider.getValue() - 100);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void ImageLabelMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_ImageLabelMouseWheelMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ImageLabelMouseWheelMoved
 
     private void AboutMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AboutMenuMouseClicked
          new About().setVisible(true);

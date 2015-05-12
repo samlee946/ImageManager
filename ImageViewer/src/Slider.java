@@ -1,9 +1,11 @@
 import java.awt.Color;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.Math.max;
 import static java.lang.System.exit;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
@@ -14,15 +16,17 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
-public class Slider extends javax.swing.JFrame implements Runnable{
-    static Slider slider = null;
+public class Slider extends javax.swing.JFrame implements Runnable {
+    ImageIcon imageicon;
     static ImageViewer frame = null;
     File CurrentFile = null;
-    int play = 0;
     ImageAction action = ImageAction.getInstance();
     File CurImage = action.getFile();
     ArrayList<File> ImagesPreLoad = action.getFiles();
     int index = ImagesPreLoad.indexOf(CurImage);
+    int originalheight;
+    int originalwidth;
+    int play = 0;
     Thread time = new Thread(this); //new thread
     void setFrame(ImageViewer frame) {
         this.frame = frame;
@@ -37,17 +41,6 @@ public class Slider extends javax.swing.JFrame implements Runnable{
                 this.getContentPane().setVisible(true);
                 this.setVisible(true);
     }
-    static Slider getInstance() {
-        if(slider == null)  slider = new Slider();
-                GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                        .getDefaultScreenDevice();
-                slider.setBackground(Color.black);  
-                slider.getContentPane().setBackground(Color.black);  
-                slider.getContentPane().setVisible(true);
-                slider.setVisible(true);
-//                gd.setFullScreenWindow(slider);
-        return slider;
-    }
     void slideshow() {
         System.out.println("click slideshow");
         time.start();
@@ -55,6 +48,14 @@ public class Slider extends javax.swing.JFrame implements Runnable{
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         gd.setFullScreenWindow(this);
     }
+    void ImageResize(double size) {
+        if(imageicon != null) {
+            int width = max(1, (int)(originalwidth * size));
+            int height = max(1, (int)(originalheight * size));
+            ImageLabel.setIcon(new ImageIcon(imageicon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT)));
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -103,9 +104,13 @@ public class Slider extends javax.swing.JFrame implements Runnable{
 
     void Play() {
         try {
+            for(double i = 1.0; i > 0; i -= 0.05) ImageResize(i);
             this.CurrentFile = ImagesPreLoad.get(index);
             BufferedImage buff = ImageIO.read(this.CurrentFile);
-            ImageIcon imageicon = new ImageIcon(buff);
+            imageicon = new ImageIcon(buff);
+            originalheight = imageicon.getIconHeight();
+            originalwidth = imageicon.getIconWidth();
+            for(double i = 0; i <= 1; i += 0.05) ImageResize(i);
             ImageLabel.setIcon(imageicon);
             index = (index + 1) % ImagesPreLoad.size();
             System.out.println("play index: " + index);
@@ -124,57 +129,8 @@ public class Slider extends javax.swing.JFrame implements Runnable{
             }
         }
     }
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(Slider.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(Slider.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(Slider.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(Slider.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-            
-//            public void run() {
-//                System.out.println("hehe");
-//                while(play == 1) {
-                    
-//                }
-//                slider = new Slider();
-//                slider.setVisible(true);
-//                GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
-//                        .getDefaultScreenDevice();
-//                slider.setBackground(Color.black);  
-//                slider.getContentPane().setBackground(Color.black);  
-//                slider.getContentPane().setVisible(true);
-////                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                gd.setFullScreenWindow(slider);
-//            }
-//        });
-//    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImageLabel;
     // End of variables declaration//GEN-END:variables
-
 
 }
