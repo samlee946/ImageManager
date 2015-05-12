@@ -1,3 +1,5 @@
+import java.awt.Cursor;
+import static java.awt.Cursor.HAND_CURSOR;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
@@ -56,6 +58,7 @@ class ImageAction {
             }
             imageicon = new ImageIcon(FileName);
             frame.getLabel().setIcon(imageicon);
+//            frame.getLabel().setCursor(Cursor.getPredefinedCursor(HAND_CURSOR));
             frame.getSlider().setEnabled(true);
             frame.getAutoPlay().setEnabled(true);
             RotateCount = 0;
@@ -63,6 +66,7 @@ class ImageAction {
         }
     }
     void openByPath(File image, ImageViewer frame) {
+        System.out.println(image);
         ImagesPreLoad = new ArrayList<File>();
         CurrentFile = image;
         FilePath = CurrentDir = new File(image.getParent());
@@ -80,8 +84,9 @@ class ImageAction {
                 }
             }
         }
-        imageicon = new ImageIcon(image.getPath());
+        imageicon = new ImageIcon(FileName);
         frame.getLabel().setIcon(imageicon);
+//        frame.getLabel().setCursor(Cursor.getPredefinedCursor(HAND_CURSOR));
         frame.getSlider().setEnabled(true);
         frame.getAutoPlay().setEnabled(true);
         RotateCount = 0;

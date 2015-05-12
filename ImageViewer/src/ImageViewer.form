@@ -151,10 +151,16 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="ImageLabel">
           <Properties>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Default Cursor"/>
+            </Property>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10086, 10086]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="ImageLabelMouseDragged"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -372,7 +378,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x5f53;&#x524d;&#x653e;&#x5927;&#x500d;&#x6570;:"/>
+                <Property name="text" type="java.lang.String" value="&#x5f53;&#x524d;&#x663e;&#x793a;&#x500d;&#x6570;:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="ZoomLabel">

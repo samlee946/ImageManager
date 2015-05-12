@@ -13,11 +13,6 @@ public class ImageViewer extends javax.swing.JFrame {
         initComponents();
         ImageLabel.setHorizontalAlignment(SwingConstants.CENTER); //居中显示Label的内容
         validate();
-//        //DEBUG
-//        ImageAction action = ImageAction.getInstance();
-//        action.imageicon = new ImageIcon("I:\\Users\\Administrator\\Pictures\\03bd91a2-aafc-11e4-848d-ed0abaecf4a1.jpg");
-//        ImageLabel.setIcon(action.imageicon);
-//        //
     }
     static ImageViewer getInstance() {
         System.out.println("open outside");
@@ -77,7 +72,13 @@ public class ImageViewer extends javax.swing.JFrame {
 
         MainPanel.setMinimumSize(new java.awt.Dimension(0, 0));
 
+        ImageLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         ImageLabel.setMaximumSize(new java.awt.Dimension(10086, 10086));
+        ImageLabel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                ImageLabelMouseDragged(evt);
+            }
+        });
         MainPanel.setViewportView(ImageLabel);
 
         getContentPane().add(MainPanel, java.awt.BorderLayout.CENTER);
@@ -146,7 +147,7 @@ public class ImageViewer extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("当前放大倍数:");
+        jLabel1.setText("当前显示倍数:");
 
         ZoomLabel.setText("100%");
 
@@ -416,23 +417,21 @@ public class ImageViewer extends javax.swing.JFrame {
     }//GEN-LAST:event_CounterClockwiseMenuActionPerformed
 
     private void AutoPlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoPlayButtonActionPerformed
-        try {
-            //AutoPlay autoplay = AutoPlay.getInstance();
-            //autoplay.start();
-            Slider slider = Slider.getInstance();
-            slider.setFrame(frame);
-            slider.setVisible(true);
-            slider.Play();
-        } catch (IOException ex) {
-            Logger.getLogger(ImageViewer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        Slider slider = Slider.getInstance();
+//        slider.setFrame(frame);
+        Slider slider = new Slider();
+        slider.setFrame(frame);
+        slider.slideshow();
+        //slider.setVisible(true);
     }//GEN-LAST:event_AutoPlayButtonActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        Slider slider = Slider.getInstance();
-        slider.setFrame(frame);
-        slider.setVisible(true);
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void ImageLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseDragged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ImageLabelMouseDragged
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -465,6 +464,11 @@ public class ImageViewer extends javax.swing.JFrame {
                 frame = new ImageViewer();
                 frame.setVisible(true);
                 frame.setSize(1280, 720);
+                //DEBUG
+                ImageAction action = ImageAction.getInstance();
+                File image = new File("I:\\Users\\Administrator\\Pictures\\03bd91a2-aafc-11e4-848d-ed0abaecf4a1.jpg");
+                action.openByPath(image, ImageViewer.getInstance());
+                //
             }
         });
     }
