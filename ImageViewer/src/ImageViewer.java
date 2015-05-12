@@ -1,18 +1,44 @@
 import java.awt.Dimension;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.max;
 import static java.lang.System.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class ImageViewer extends javax.swing.JFrame {
+public class ImageViewer extends javax.swing.JFrame implements MouseWheelListener {
     static ImageViewer frame = null;
     public ImageViewer() {
         initComponents();
         ImageLabel.setHorizontalAlignment(SwingConstants.CENTER); //居中显示Label的内容
+        this.addMouseWheelListener(new MouseWheelListener() { 
+            @Override 
+            public void mouseWheelMoved(MouseWheelEvent e) { 
+                if ((e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
+                    if (e.getWheelRotation() < 0) ResizeSlider.setValue(ResizeSlider.getValue() + 100);
+                    else ResizeSlider.setValue(ResizeSlider.getValue() - 100);
+                } 
+            } 
+        });
         validate();
+    }
+    public void mouseWheelMoved(MouseWheelEvent e)
+    {
+        if (e.isControlDown()) {
+            System.out.println("Ctrl is pressed");
+            if (e.getWheelRotation() < 0) {
+                ResizeSlider.setValue(ResizeSlider.getValue() + 100);
+            }
+            else {
+                ResizeSlider.setValue(ResizeSlider.getValue() - 100);
+            }
+        }
     }
     static ImageViewer getInstance() {
         System.out.println("open outside");
@@ -49,7 +75,7 @@ public class ImageViewer extends javax.swing.JFrame {
         FileMenu = new javax.swing.JMenu();
         OpenMenu = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        SaveItem = new javax.swing.JMenuItem();
         OptionMenu = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         ExitMenu = new javax.swing.JMenuItem();
@@ -59,6 +85,9 @@ public class ImageViewer extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         ClockwiseMenu = new javax.swing.JMenuItem();
         CounterClockwiseMenu = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         AboutMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -77,6 +106,11 @@ public class ImageViewer extends javax.swing.JFrame {
         ImageLabel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 ImageLabelMouseDragged(evt);
+            }
+        });
+        ImageLabel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                ImageLabelMouseWheelMoved(evt);
             }
         });
         MainPanel.setViewportView(ImageLabel);
@@ -232,14 +266,14 @@ public class ImageViewer extends javax.swing.JFrame {
         FileMenu.add(OpenMenu);
         FileMenu.add(jSeparator1);
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("保存图片");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        SaveItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        SaveItem.setText("保存图片");
+        SaveItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                SaveItemActionPerformed(evt);
             }
         });
-        FileMenu.add(jMenuItem1);
+        FileMenu.add(SaveItem);
 
         OptionMenu.setText("选项");
         FileMenu.add(OptionMenu);
@@ -291,10 +325,33 @@ public class ImageViewer extends javax.swing.JFrame {
             }
         });
         ToolsMenu.add(CounterClockwiseMenu);
+        ToolsMenu.add(jSeparator4);
+
+        jMenuItem2.setAccelerator(KeyStroke.getKeyStroke(InputEvent.CTRL_MASK, MouseWheelEvent.MOUSE_WHEEL));
+        jMenuItem2.setText("放大图片");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        ToolsMenu.add(jMenuItem2);
+
+        jMenuItem3.setText("缩小图片");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        ToolsMenu.add(jMenuItem3);
 
         MenuBar.add(ToolsMenu);
 
         AboutMenu.setText("关于");
+        AboutMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AboutMenuMouseClicked(evt);
+            }
+        });
         MenuBar.add(AboutMenu);
 
         setJMenuBar(MenuBar);
@@ -425,13 +482,34 @@ public class ImageViewer extends javax.swing.JFrame {
         //slider.setVisible(true);
     }//GEN-LAST:event_AutoPlayButtonActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void SaveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveItemActionPerformed
+        try {
+            ImageAction action = ImageAction.getInstance();
+            action.save();
+        } catch (IOException ex) {
+            Logger.getLogger(ImageViewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_SaveItemActionPerformed
 
     private void ImageLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseDragged
         // TODO add your handling code here:
     }//GEN-LAST:event_ImageLabelMouseDragged
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        ResizeSlider.setValue(ResizeSlider.getValue() + 100);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        ResizeSlider.setValue(ResizeSlider.getValue() - 100);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void ImageLabelMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_ImageLabelMouseWheelMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ImageLabelMouseWheelMoved
+
+    private void AboutMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AboutMenuMouseClicked
+         new About().setVisible(true);
+    }//GEN-LAST:event_AboutMenuMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -491,18 +569,21 @@ public class ImageViewer extends javax.swing.JFrame {
     private javax.swing.JMenuItem PreMenu;
     private javax.swing.JButton ResetsizeButton;
     public javax.swing.JSlider ResizeSlider;
+    private javax.swing.JMenuItem SaveItem;
     private javax.swing.JMenu ToolsMenu;
     private javax.swing.JLabel ZoomLabel;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
     // End of variables declaration//GEN-END:variables
 }

@@ -92,6 +92,11 @@ class ImageAction {
         RotateCount = 0;
         frame.validate();
     }
+    void save() throws IOException {
+        String suffix = FileName.substring(FileName.lastIndexOf(".") + 1);
+        ImageIO.write(outputbuffer, suffix, this.CurrentFile);
+        RotateCount = 0;
+    }
     void ViewPreImage(ImageViewer frame) throws IOException {
         if(ImagesPreLoad != null) {
             int index = this.ImagesPreLoad.indexOf(this.CurrentFile), size = ImagesPreLoad.size();
@@ -99,8 +104,7 @@ class ImageAction {
             if(RotateCount != 0) {
                 int ret_val = JOptionPane.showConfirmDialog(null, "你已对图片进行过改动，是否保存修改？", "提示", JOptionPane.YES_NO_OPTION);
                 if(ret_val == JOptionPane.YES_OPTION) {
-                    String suffix = FileName.substring(FileName.lastIndexOf(".") + 1);
-                    ImageIO.write(outputbuffer, suffix, this.CurrentFile);
+                    save();
                 }
                 RotateCount = 0;
 //                if(ret_val == JOptionPane.YES_OPTION) System.out.println("Yes-save image");
@@ -120,8 +124,7 @@ class ImageAction {
             if(RotateCount != 0) {
                 int ret_val = JOptionPane.showConfirmDialog(null, "你已对图片进行过改动，是否保存修改？", "提示", JOptionPane.YES_NO_OPTION);
                 if(ret_val == JOptionPane.YES_OPTION) {
-                    String suffix = FileName.substring(FileName.lastIndexOf(".") + 1);
-                    ImageIO.write(outputbuffer, suffix, this.CurrentFile);
+                    save();
                 }
                 RotateCount = 0;
 //                if(ret_val == JOptionPane.YES_OPTION) System.out.println("Yes-save image");
