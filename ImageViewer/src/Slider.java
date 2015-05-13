@@ -1,3 +1,4 @@
+import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -27,9 +28,14 @@ public class Slider extends javax.swing.JFrame implements Runnable {
     int originalheight;
     int originalwidth;
     int play = 0;
+    int type;
+    double viewTimes = 1.0;
     Thread time = new Thread(this); //new thread
     void setFrame(ImageViewer frame) {
         this.frame = frame;
+    }
+    void setType(int type) {
+        this.type = type;
     }
     public Slider() {
         initComponents();
@@ -69,11 +75,21 @@ public class Slider extends javax.swing.JFrame implements Runnable {
                 formComponentResized(evt);
             }
         });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         ImageLabel.setPreferredSize(new java.awt.Dimension(1280, 720));
         ImageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ImageLabelMouseClicked(evt);
+            }
+        });
+        ImageLabel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ImageLabelKeyPressed(evt);
             }
         });
 
@@ -102,16 +118,37 @@ public class Slider extends javax.swing.JFrame implements Runnable {
         this.setVisible(false);            
     }//GEN-LAST:event_ImageLabelMouseClicked
 
+    private void ImageLabelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ImageLabelKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            time.suspend();
+            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
+            this.setVisible(false); 
+        }
+    }//GEN-LAST:event_ImageLabelKeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            time.suspend();
+            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
+            this.setVisible(false); 
+        }
+    }//GEN-LAST:event_formKeyPressed
+
     void Play() {
         try {
-            for(double i = 1.0; i > 0; i -= 0.05) ImageResize(i);
+            for(double i = viewTimes; i > 0; i -= 0.05) ImageResize(i);
             this.CurrentFile = ImagesPreLoad.get(index);
             BufferedImage buff = ImageIO.read(this.CurrentFile);
             imageicon = new ImageIcon(buff);
             originalheight = imageicon.getIconHeight();
             originalwidth = imageicon.getIconWidth();
-            for(double i = 0; i <= 1; i += 0.05) ImageResize(i);
-            ImageLabel.setIcon(imageicon);
+            //show image in center or pull, 0 is center, 1 is pull
+            if(type == 1) {
+                int WindowHeight = this.getHeight();
+                viewTimes = (double) WindowHeight / originalheight;
+            }
+            for(double i = 0; i <= viewTimes; i += 0.05) ImageResize(i);
+            //ImageLabel.setIcon(imageicon);
             index = (index + 1) % ImagesPreLoad.size();
             System.out.println("play index: " + index);
         } catch (IOException ex) {

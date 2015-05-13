@@ -14,6 +14,7 @@ import javax.swing.*;
 
 public class ImageViewer extends javax.swing.JFrame implements MouseWheelListener {
     static ImageViewer frame = null;
+    int type;
     public ImageViewer() {
         initComponents();
         ImageLabel.setHorizontalAlignment(SwingConstants.CENTER); //居中显示Label的内容
@@ -266,6 +267,11 @@ public class ImageViewer extends javax.swing.JFrame implements MouseWheelListene
         FileMenu.add(SaveItem);
 
         OptionMenu.setText("选项");
+        OptionMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OptionMenuActionPerformed(evt);
+            }
+        });
         FileMenu.add(OptionMenu);
         FileMenu.add(jSeparator2);
 
@@ -317,7 +323,6 @@ public class ImageViewer extends javax.swing.JFrame implements MouseWheelListene
         ToolsMenu.add(CounterClockwiseMenu);
         ToolsMenu.add(jSeparator4);
 
-        jMenuItem2.setAccelerator(KeyStroke.getKeyStroke(InputEvent.CTRL_MASK, MouseWheelEvent.MOUSE_WHEEL));
         jMenuItem2.setText("放大图片");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -357,6 +362,12 @@ public class ImageViewer extends javax.swing.JFrame implements MouseWheelListene
     }
     JButton getAutoPlay() {
         return AutoPlayButton;
+    }
+    void setSlideShowType(int type) {
+        this.type = type;
+    }
+    public int getSlideShowType() {
+        return this.type;
     }
     private void ExitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuActionPerformed
         exit(0);
@@ -466,6 +477,7 @@ public class ImageViewer extends javax.swing.JFrame implements MouseWheelListene
     private void AutoPlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoPlayButtonActionPerformed
         Slider slider = new Slider();
         slider.setFrame(frame);
+        slider.setType(type);
         slider.slideshow();
         //slider.setVisible(true);
     }//GEN-LAST:event_AutoPlayButtonActionPerformed
@@ -490,6 +502,12 @@ public class ImageViewer extends javax.swing.JFrame implements MouseWheelListene
     private void AboutMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AboutMenuMouseClicked
          new About().setVisible(true);
     }//GEN-LAST:event_AboutMenuMouseClicked
+
+    private void OptionMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptionMenuActionPerformed
+        PreferenceSettings settings = new PreferenceSettings();
+        settings.start();
+        settings.setVisible(true);
+    }//GEN-LAST:event_OptionMenuActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
